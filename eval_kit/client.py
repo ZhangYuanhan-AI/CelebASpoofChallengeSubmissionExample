@@ -22,9 +22,9 @@ from io import BytesIO
 # YOU CAN ONLY CHANGE LINE 95 - 116
 
 WORKSPACE_BUCKET = 'deeperforensics-eval-workspace'
-IMAGE_LIST_PATH = 'test-data/test_example.txt'
-IMAGE_PREFIX = 'test-data/'
-UPLOAD_PREFIX = 'test-output/'
+IMAGE_LIST_PATH = 'test_data/test_example.txt'
+IMAGE_PREFIX = 'test_data/'
+UPLOAD_PREFIX = 'test_output/'
 TMP_PATH = '/tmp'
 
 
@@ -158,16 +158,15 @@ def verify_local_output(output_probs, output_times):
     - num_frames (dict): dict of number of frames extracting from every video
     """
     # gts = json.load(open('test-data/local_test_groundtruth.json'), parse_int=float)
-    gts = json.load(open('test-data/local_test_groundtruth.json'))
+    gts = json.load(open('test_data/test_example_label.json'))
 
     all_time = 0
     all_num_frames = 0
     for k in gts:
-
+        #import pdb;pdb.set_trace()
         assert k in output_probs and k in output_times, ValueError("The detector doesn't work on image {}".format(k))
 
         all_time += output_times[k]
-        all_num_frames += num_frames[k]
 
         logging.info("Image ID: {}, Runtime: {}".format(k, output_times[k]))
         logging.info("\tgt: {}".format(gts[k]))

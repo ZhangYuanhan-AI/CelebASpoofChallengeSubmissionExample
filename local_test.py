@@ -1,7 +1,7 @@
 """
 This script provides a local test routine so you can verify the algorithm works before pushing it to evaluation.
 
-It runs your detector on several local videos and verify whether they have obvious issues, e.g:
+It runs your detector on several local images and verify whether they have obvious issues, e.g:
     - Fail to start
     - Wrong output format
 
@@ -11,8 +11,8 @@ It also prints out the runtime for the algorithms for your references.
 The participants are expected to implement a face forgery detector class. The sample detector illustrates the interface.
 Do not modify other part of the evaluation toolkit otherwise the evaluation will fail.
 
-Author: Yuanjun Xiong, Zhengkui Guo
-Contact: zhengkui_guo@outlook.com
+Author: Yuanjun Xiong, Zhengkui Guo, Yuanhan Zhang
+Contact: zhangyuanhan@sensetime.com
 
 DeeperForensics Challenge
 """
@@ -22,7 +22,7 @@ import sys
 import logging
 
 import numpy as np
-from eval_kit.client import get_local_frames_iter, verify_local_output
+from eval_kit.client import get_local_image, verify_local_output
 
 logging.basicConfig(level=logging.INFO)
 
@@ -57,12 +57,14 @@ def run_local_test(detector_class, image_iter):
     for image_id, image in image_iter:
         time_before = time.time()
         try:
+        #    import pdb;pdb.set_trace()
             prob = detector.predict(image)
+            #import pdb;pdb.set_trace()
             assert isinstance(prob, float)
-            output_probs[video_id] = prob
+            output_probs[image_id] = prob
         except:
             # send errors to the eval frontend
-            logging.error("Video id failed: {}".format(video_id))
+            logging.error("Image id failed: {}".format(image_id))
             raise
         elapsed = time.time() - time_before
         output_times[image_id] = elapsed
@@ -85,4 +87,4 @@ def run_local_test(detector_class, image_iter):
 
 if __name__ == '__main__':
     celebA_spoof_image_iter = get_local_image()
-    run_local_test(DeeperForensicsDetector, celebA_spoof_image_iter)
+    run_local_test(CelebASpoofDetector, celebA_spoof_image_iter)

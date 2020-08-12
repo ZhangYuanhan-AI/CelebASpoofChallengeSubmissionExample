@@ -1,10 +1,11 @@
+from PIL import Image
 import sys
 import numpy as np
 import torchvision
+import torch
 #from sklearn.metrics import confusion_matrix
 
-from models import TSN
-from transforms import *
+from models import AENet
 from ops import ConsensusModule
 
 sys.path.append('..')
@@ -34,11 +35,11 @@ class TSNPredictor(CelebASpoofDetector):
         checkpoint = torch.load('./model/ckpt_iter_27000.pth.tar')
         print("model step {} best prec@1: {}".format(checkpoint['step'], checkpoint['best_prec1']))
         pretrain(self.net,checkpoint['state_dict'])
-
+        self.new_width = self.new_height = 224
 
         self.transform = torchvision.transforms.Compose([
-            transforms.Resize((self.new_width, self.new_height)),
-            transforms.ToTensor(),
+            torchvision.transforms.Resize((self.new_width, self.new_height)),
+            torchvision.transforms.ToTensor(),
             ])
         
         self.net.cuda()
@@ -47,13 +48,14 @@ class TSNPredictor(CelebASpoofDetector):
 
 
     def preprocess_data(self, image):
-        image = Image.fromarray(frame).resize((224,224), Image.BICUBIC)
+        processed_data = Image.fromarray(image).resize((224,224), Image.BICUBIC)
+        processed_data = self.transform(processed_data)
         return processed_data
 
     def eval_image(self, image):
         data = image.unsqueeze(0)
         channel = 3
-        input_var = data.view(-1, channel, data.size(2), data.size(3))
+        input_var = data.view(-1, channel, data.size(2), data.size(3)).cuda()
         with torch.no_grad():
             rst = self.net(input_var).detach().cpu().numpy().copy()
         return rst.reshape(1, self.num_class)
@@ -62,4 +64,4 @@ class TSNPredictor(CelebASpoofDetector):
         data = self.preprocess_data(image)
         rst = self.eval_image(data)
         probability = np.array(rst)
-        return probability[0][1]
+        return float(probability[0][1])
