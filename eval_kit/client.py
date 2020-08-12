@@ -22,7 +22,7 @@ from io import BytesIO
 # YOU CAN ONLY CHANGE LINE 95 - 116
 
 WORKSPACE_BUCKET = 'deeperforensics-eval-workspace'
-IMAGE_LIST_PATH = 'test-data/deeperforensicis_runtime_eval_video_list.txt'
+IMAGE_LIST_PATH = 'test-data/test_example.txt'
 IMAGE_PREFIX = 'test-data/'
 UPLOAD_PREFIX = 'test-output/'
 TMP_PATH = '/tmp'

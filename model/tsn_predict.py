@@ -31,7 +31,7 @@ class TSNPredictor(CelebASpoofDetector):
     def __init__(self):
         self.num_class = 2
         self.net = AENet(num_classes = self.num_class)
-        checkpoint = torch.load('./model/fake_bninception_AF_rgb_model_best.pth.tar')
+        checkpoint = torch.load('./model/ckpt_iter_27000.pth.tar')
         print("model step {} best prec@1: {}".format(checkpoint['step'], checkpoint['best_prec1']))
         pretrain(self.net,checkpoint['state_dict'])
 

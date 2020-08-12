@@ -1,0 +1,4 @@
+Data/test/6964/spoof/494405.png
+Data/test/9596/spoof/494406.png
+Data/test/9014/spoof/494407.png
+Data/test/7607/spoof/494408.png
