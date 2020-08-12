@@ -10,15 +10,15 @@ class CelebASpoofDetector(ABC):
         """
 
     @abstractmethod
-    def predict(self, video_frames):
+    def predict(self, image):
         """
-        Process a list of video frames, the evaluation toolkit will measure the runtime of every call to this method.
-        The time cost will include any thing that's between the image input to the final bounding box output.
+        Process a list of image, the evaluation toolkit will measure the runtime of every call to this method.
+        The time cost will include any thing that's between the image input to the final prediction score.
         The image will be given as a numpy array in the shape of (H, W, C) with dtype np.uint8.
         The color mode of the image will be **RGB**.
         
         params:
-            - video_frames (list): a list of numpy arrays with dtype=np.uint8 representing frames of **one** video
+            - image (np.array): numpy array of required image
         return:
             - probablity (float)
         """

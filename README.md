@@ -1,11 +1,11 @@
-# DeeperForensics Challenge Submission Example
-This repo provides an example Docker image for submission of DeeperForensics Challenge 2020. The submission is in the form of online evaluation.
+# CelebA-Spoof Challenge Submission Example
+This repo provides an example Docker image for submission of CelebA-Spoof Challenge 2020. The submission is in the form of online evaluation.
 
 **Note**: **We highly recommend the participants to test their Docker images before submission.** Or your code may not be run properly on the online evaluation platform. Please refer to [Test the Docker image locally](#test-the-docker-image-locally) for instructions.
 
 ## Before you start: request resource provision
 
-First, create an account on the [challenge website](https://competitions.codalab.org/competitions/22955), as well as an [AWS account](https://aws.amazon.com/account/) (in any region except Beijing and Ningxia). Then, send your **AWS account id (12 digits)** and **an email address** to the orgnizers' email address: [deeperforensics@gmail.com](mailto:deeperforensics@gmail.com). We will allocate evaluation resources for you.
+First, create an account on the [challenge website](https://competitions.codalab.org/competitions/22955), as well as an [AWS account](https://aws.amazon.com/account/) (in any region except Beijing and Ningxia). Then, send your **AWS account id (12 digits)** and **an email address** to the orgnizers' email address: [sensetimeliveness@gmail.com](mailto:sensetimeliveness@gmail.com). We will allocate evaluation resources for you.
 
 ## Install and configure AWS CLI
 Then you should install AWS CLI (we recommend version 2). Please refer to https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html.
@@ -20,38 +20,39 @@ In order to build your Docker image, you should install Docker Engine first. Ple
 Run the following command to clone this submission example repo:
 
 ```bash
-git clone https://github.com/Drdestiny/DeeperForensicsChallengeSubmissionExample
+git clone https://github.com/Davidzhangyuanhan/CelebASpoofChallengeSubmissionExample.git
 ```
 
 ## Include your own algorithm & Build Docker image
 
 - Your algorithm codes should be put in `model`.
-- Your detector should inherit `DeeperForensicsDetector` class in `eval_kit/detector.py`. For example:
+- Your detector should inherit CelebASpoofDetector class in `eval_kit/detector.py`. For example:
 
 ```python
 sys.path.append('..')
-from eval_kit.detector import DeeperForensicsDetector
+from eval_kit.detector import CelebASpoofDetector
 
-class TSNPredictor(DeeperForensicsDetector): # You can give your detector any name.
+class TSNPredictor(CelebASpoofDetector): # You can give your detector any name.
     ...
 ```
-You need to implement the abstract function `predict(self, video_frames)` in your detector class:
+You need to implement the abstract function `predict(self, image)` in your detector class:
 
 ```python
-  @abstractmethod
-  def predict(self, video_frames):
-      """
-      Process a list of video frames, the evaluation toolkit will measure the runtime of every call to this method.
-      The time cost will include any thing that's between the image input to the final bounding box output.
-      The image will be given as a numpy array in the shape of (H, W, C) with dtype np.uint8.
-      The color mode of the image will be **RGB**.
-      
-      params:
-          - video_frames (list): a list of numpy arrays with dtype=np.uint8 representing frames of **one** video
-      return:
-          - probablity (float)
-      """
-      pass
+    @abstractmethod
+    def predict(self, image):
+        """
+        Process a list of image, the evaluation toolkit will measure the runtime of every call to this method.
+        The time cost will include any thing that's between the image input to the final prediction score.
+        The image will be given as a numpy array in the shape of (H, W, C) with dtype np.uint8.
+        The color mode of the image will be **RGB**.
+        
+        params:
+            - image (np.array): numpy array of required image
+        return:
+            - probablity (float)
+        """
+        pass
+
 ```
 
 - Modify Line 29 in `run_evalution.py` to import your own detector for evaluation.
@@ -59,43 +60,8 @@ You need to implement the abstract function `predict(self, video_frames)` in you
 ```python
 ########################################################################################################
 # please change this line to include your own detector extending the eval_kit.detector.DeeperForensicsDetector base class.
-from tsn_predict import TSNPredictor as DeeperForensicsDetector
+from tsn_predict import TSNPredictor as CelebASpoofDetector
 ########################################################################################################
-```
-
-- Also, you can implement frame extracting using your own method. If so, you should modify Line 97 - 114 in `eval_kit/client.py` (optional). **Make sure that return type remains the same.**
-```python
-def extract_frames(video_path):
-    """
-    Extract frames from a video
-
-    params:
-        - video_local_path (str): the path of video.
-    return:
-        - frames (list): a list containing frames cut from the video.
-    """
-    ########################################################################################################
-    # Please change these lines below to implement your own frame extracting method, or just use it.  
-    vid = cv2.VideoCapture(video_path)
-    cnt = 0
-    skip_cnt = 0
-    frames = []
-    while True:
-        success, frame = vid.read()
-        if not success:
-            break
-        if frame is not None:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frames.append(frame)
-            cnt += 1
-        skip_cnt += 1 # prevent time out
-        # detect first 50 frames
-        if cnt >= 50 or skip_cnt >= 300:
-            break
-    vid.release()
-    return frames
-    # Your change ends here.
-    ########################################################################################################
 ```
 
 - Edit `Dockerfile` to build your Docker image. If you don't know how to use Dockerfile, please refer to:
@@ -112,7 +78,7 @@ Before running, modify Line 32 in `local_test.py`.
 To verify your algorithm can be run properly, run the following command:
 
 ```bash
-docker run -it deeperforensics-challenge-<your_aws_id> python3 local_test.py
+docker run -it CelebASpoof-challenge-<your_aws_id> python3 local_test.py
 ```
 
 **Please refer to step 2 and 3 in** [Submit the Docker image](#submit-the-docker-image) **to learn how to tag your Docker image.**
@@ -123,36 +89,36 @@ You can compare the output of your algorithm with the ground truth for the sampl
 The output will look like:
 
 ```
+INFO:root:image 494405.png run time: 3.766650676727295
+INFO:root:image 494406.png run time: 0.009404897689819336
+INFO:root:image 494407.png run time: 0.008934736251831055
+INFO:root:image 494408.png run time: 0.00885915756225586
+INFO:root:
     ================================================================================
-    all videos finished, showing verification info below:
+    all images finished, showing verification info below:
     ================================================================================
-    
-INFO:root:Video ID: 000000.mp4, Runtime: 0.7639188766479492
-INFO:root:	gt: 0
-INFO:root:	output probability: 0.00022679567337036133
-INFO:root:	number of frame: 50
-INFO:root:	output time: 0.7639188766479492
-INFO:root: 
-INFO:root:Video ID: 000001.mp4, Runtime: 0.26082539558410645
-INFO:root:	gt: 1
-INFO:root:	output probability: 0.9986529353773221
-INFO:root:	number of frame: 50
-INFO:root:	output time: 0.26082539558410645
-INFO:root: 
-INFO:root:Video ID: 000002.mp4, Runtime: 0.25582146644592285
-INFO:root:	gt: 1
-INFO:root:	output probability: 0.9995381628687028
-INFO:root:	number of frame: 50
-INFO:root:	output time: 0.25582146644592285
-INFO:root: 
-INFO:root:Video ID: 000003.mp4, Runtime: 0.2605171203613281
-INFO:root:	gt: 0
-INFO:root:	output probability: 0.00013506412506103516
-INFO:root:	number of frame: 50
-INFO:root:	output time: 0.2605171203613281
-INFO:root: 
-INFO:root:Done. Average FPS: 129.779
 
+INFO:root:Image ID: 494405.png, Runtime: 3.766650676727295
+INFO:root:      gt: 1
+INFO:root:      output probability: -0.38473382592201233                                                                                                                                                    INFO:root:      output time: 3.766650676727295
+INFO:root:
+INFO:root:Image ID: 494406.png, Runtime: 0.009404897689819336
+INFO:root:      gt: 1
+INFO:root:      output probability: -0.38809671998023987
+INFO:root:      output time: 0.009404897689819336
+INFO:root:
+INFO:root:Image ID: 494407.png, Runtime: 0.008934736251831055
+INFO:root:      gt: 1
+INFO:root:      output probability: -0.35367435216903687
+INFO:root:      output time: 0.008934736251831055
+INFO:root:
+INFO:root:Image ID: 494408.png, Runtime: 0.00885915756225586
+INFO:root:      gt: 1
+INFO:root:      output probability: -0.47143808007240295
+INFO:root:      output time: 0.00885915756225586
+INFO:root:
+INFO:root:Done
+model step 27000 best prec@1: 96.66146441557561
 ```
 
 ## Submit the Docker image
@@ -173,26 +139,26 @@ aws ecr get-login-password --region us-west-2 | docker login --username AWS --pa
 2. Build your Docker image using the following command. For information on building a Docker file from scratch see the instructions here. You can skip this step if your image is already built:
 
 ```bash
-cd ../DeeperForensicsChallengeSubmissionExample
-docker build -t deeperforensics-challenge-<your_aws_id> .  # . means the current path. Please don't lose it.
+cd ../CelebASpoofChallengeSubmissionExample
+docker build -t CelebASpoof-challenge-<your_aws_id> .  # . means the current path. Please don't lose it.
 ```
 
 For example:
 
 ```bash
-docker build -t deeperforensics-challenge-123412341234 . 
+docker build -t CelebASpoof-challenge-123412341234 . 
 ```
 
 3. After the build is completed, tag your image so you can push the image to the repository:
 
 ```bash
-docker tag deeperforensics-challenge-<your_aws_id>:latest 212923332099.dkr.ecr.us-west-2.amazonaws.com/deeperforensics-challenge-<your_aws_id>:latest
+docker tag CelebASpoof-challenge-<your_aws_id>:latest 212923332099.dkr.ecr.us-west-2.amazonaws.com/CelebASpoof-challenge-<your_aws_id>:latest
 ```
 
 4. Run the following command to push this image to your the AWS ECR repository:
 
 ```bash
-docker push 212923332099.dkr.ecr.us-west-2.amazonaws.com/deeperforensics-challenge-<your_aws_id>:latest
+docker push 212923332099.dkr.ecr.us-west-2.amazonaws.com/CelebASpoof-challenge-<your_aws_id>:latest
 ```
 
-After you pushed to the repo, the evaluation will automatically start. In **3 hours** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/22955).
+After you pushed to the repo, the evaluation will automatically start. In **0.5 hours** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/22955).
