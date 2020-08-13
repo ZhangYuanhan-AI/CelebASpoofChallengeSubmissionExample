@@ -21,7 +21,7 @@ from io import BytesIO
 # EVALUATION SYSTEM SETTINGS
 # YOU CAN ONLY CHANGE LINE 95 - 116
 
-WORKSPACE_BUCKET = 'deeperforensics-eval-workspace'
+WORKSPACE_BUCKET = 'CelebASpoof-eval-workspace'
 IMAGE_LIST_PATH = 'test_data/test_example.txt'
 IMAGE_PREFIX = 'test_data/'
 UPLOAD_PREFIX = 'test_output/'
