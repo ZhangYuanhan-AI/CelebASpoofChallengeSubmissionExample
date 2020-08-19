@@ -2,7 +2,6 @@ import torch.nn as nn
 import torch
 import math
 import torch.utils.model_zoo as model_zoo
-#from torchE.nn import SyncBatchNorm2d
 import torch.nn.functional as F
 from torch.autograd import Variable
 
@@ -12,18 +11,6 @@ import numpy as np
 from torch.nn import Parameter
 
 BN = nn.BatchNorm2d
-
-
-# __all__ = ['resnet18_multi_label_no_env_depth_reflection_live',
-# 'resnet18_multi_label_live_attribute','resnet18_multi_label_no_env_no_light',
-# 'resnet18_multi_label_no_env_no_live','resnet18_multi_label_no_env_no_attack',
-# 'resnet18_multi_label_no_env_no_live_attribute','resnet18_multi_label',
-# 'resnet18_multi_label_no_live','resnet18_multi_label_no_attack',
-# 'resnet18_multi_label_no_light','resnet18_multi_label_no_env',
-# 'resnet18_multi_label_no_live_attribute','resnet18_multi_label_attack',
-# 'resnet18_multi_label_light','resnet18_multi_label_env',
-# 'resnet18_multi_label_no_env_depth_reflection_all_after_arcface',
-# 'resnet18_multi_label_no_env_depth_reflection_all_after']
 
 
 
@@ -117,12 +104,6 @@ class AENet(nn.Module):
         
         global BN
 
-#        def BNFunc(*args, **kwargs):
-#            #return SyncBatchNorm2d(*args, **kwargs, group_size=group_size, group=group, sync_stats=sync_stats)
-#            return SyncBatchNorm2d(group_size=group_size, group=group, sync_stats=sync_stats, *args, **kwargs)
-
-#        BN = BNFunc
-
 
         self.inplanes = 64
         super(AENet, self).__init__()
@@ -210,23 +191,12 @@ class AENet(nn.Module):
 
 
         return x_live
-        # return depth_map, reflect_map, x_live_attribute,x_attack,x_light,x_live,x
 
 
-def get_model_size(model):
-    result = 0
-    for key,value in model.state_dict().items():
-        s = 1
-        for item in value.size():
-            s *= item
-        result += s
-        print(key)
-    result *= 4
-    return result
 
 
 if __name__=="__main__":
-    model = resnet18_multi_label()
+    model = AENet()
     model.eval()
-    print(get_model_size(model)/1024/1024)
+
 

@@ -21,8 +21,8 @@ from io import BytesIO
 # EVALUATION SYSTEM SETTINGS
 # YOU CAN ONLY CHANGE LINE 95 - 116
 
-WORKSPACE_BUCKET = 'CelebASpoof-eval-workspace'
-IMAGE_LIST_PATH = 'test_data/test_example.txt'
+WORKSPACE_BUCKET = 'celeba-spoof-eval-workspace'
+IMAGE_LIST_PATH = 'test_data/challenge_test_path_crop.txt'
 IMAGE_PREFIX = 'test_data/'
 UPLOAD_PREFIX = 'test_output/'
 TMP_PATH = '/tmp'
@@ -56,7 +56,7 @@ def _upload_output_to_s3(data, filename, s3_bucket, s3_prefix):
 
 
 def get_job_name():
-    return os.environ['DEEPERFORENSICS_EVAL_JOB_NAME']
+    return os.environ['CELEBASPOOF_EVAL_JOB_NAME']
 
 
 def upload_eval_output(output_probs, output_times, job_name):

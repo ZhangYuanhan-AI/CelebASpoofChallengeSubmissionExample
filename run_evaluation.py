@@ -5,7 +5,7 @@ It will be the entrypoint for the evaluation docker once built.
 Basically It downloads a list of videos and run the detector on each video.
 Then the runtime output will be reported to the evaluation system.
 
-The participants are expected to implement a deepfake detector class. The sample detector illustrates the interface.
+The participants are expected to implement a  detector class. The sample detector illustrates the interface.
 Do not modify other part of the evaluation toolkit otherwise the evaluation will fail.
 
 Author: Yuanjun Xiong, Zhengkui Guo, Yuanhan Zhang
@@ -66,14 +66,14 @@ def evaluate_runtime(detector_class, image_iter, job_name):
             raise
         elapsed = time.time() - time_before
         output_times[image_id] = elapsed
-        logging.info("video {} run time: {}".format(image_id, elapsed))
+        logging.info("Image {} run time: {}".format(image_id, elapsed))
 
         eval_cnt += 1
 
         if eval_cnt % 100 == 0:
             logging.info("Finished {} image".format(eval_cnt))
 
-    logging.info("all images finished, uploading evaluation outputs for evaluation.")
+    logging.info("All images finished, uploading evaluation outputs for evaluation.")
     # send evaluation output to the server
     upload_eval_output(output_probs, output_times, job_name)
 
