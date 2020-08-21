@@ -22,7 +22,7 @@ from io import BytesIO
 # YOU CAN ONLY CHANGE LINE 95 - 116
 
 WORKSPACE_BUCKET = 'celeba-spoof-eval-workspace'
-IMAGE_LIST_PATH = 'test_data/challenge_test_path_crop.txt'
+IMAGE_LIST_PATH = 'files/challenge_test_path_crop.txt'
 IMAGE_PREFIX = 'test_data/'
 UPLOAD_PREFIX = 'test_output/'
 TMP_PATH = '/tmp'
