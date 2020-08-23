@@ -5,7 +5,7 @@ It will be the entrypoint for the evaluation docker once built.
 Basically It downloads a list of videos and run the detector on each video.
 Then the runtime output will be reported to the evaluation system.
 
-The participants are expected to implement a deepfake detector class. The sample detector illustrates the interface.
+The participants are expected to implement a  detector class. The sample detector illustrates the interface.
 Do not modify other part of the evaluation toolkit otherwise the evaluation will fail.
 
 Author: Yuanjun Xiong, Zhengkui Guo, Yuanhan Zhang
@@ -25,8 +25,8 @@ logging.basicConfig(level=logging.INFO)
 
 sys.path.append('model')
 ########################################################################################################
-# Please change this line to include your own detector extending the eval_kit.detector.DeeperForensicsDetector base class.
-from tsn_predict import TSNPredictor as DeeperForensicsDetector
+# Please change this line to include your own detector extending the eval_kit.detector.CelebASpoofDetector base class.
+from tsn_predict import TSNPredictor as CelebASpoofDetector
 ########################################################################################################
 
 
@@ -35,7 +35,7 @@ def evaluate_runtime(detector_class, image_iter, job_name):
     Please DO NOT modify this part of code or the eval_kit
     Modification of the evaluation toolkit could result in cancellation of your award.
 
-    In this function we create the detector instance. And evaluate the wall time for performing DeeperForensicsDetector.
+    In this function we create the detector instance. And evaluate the wall time for performing CelebASpoofDetector.
     """
 
     # initialize the detector
@@ -66,14 +66,14 @@ def evaluate_runtime(detector_class, image_iter, job_name):
             raise
         elapsed = time.time() - time_before
         output_times[image_id] = elapsed
-        logging.info("video {} run time: {}".format(image_id, elapsed))
+        logging.info("Image {} run time: {}".format(image_id, elapsed))
 
         eval_cnt += 1
 
         if eval_cnt % 100 == 0:
             logging.info("Finished {} image".format(eval_cnt))
 
-    logging.info("all images finished, uploading evaluation outputs for evaluation.")
+    logging.info("All images finished, uploading evaluation outputs for evaluation.")
     # send evaluation output to the server
     upload_eval_output(output_probs, output_times, job_name)
 
@@ -81,7 +81,7 @@ def evaluate_runtime(detector_class, image_iter, job_name):
 if __name__ == '__main__':
     job_name = get_job_name()
     celebA_spoof_image_iter = get_image()
-    evaluate_runtime(DeeperForensicsDetector, celebA_spoof_image_iter, job_name)
+    evaluate_runtime(CelebASpoofDetector, celebA_spoof_image_iter, job_name)
 
 
 
