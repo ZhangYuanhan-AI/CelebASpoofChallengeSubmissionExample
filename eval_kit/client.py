@@ -21,16 +21,18 @@ from io import BytesIO
 # EVALUATION SYSTEM SETTINGS
 # YOU CAN ONLY CHANGE LINE 95 - 116
 
-WORKSPACE_BUCKET = 'deeperforensics-eval-workspace'
-IMAGE_LIST_PATH = 'test_data/test_example.txt'
+WORKSPACE_BUCKET = 'celeba-spoof-eval-workspace'
+IMAGE_LIST_PATH = 'files/challenge_test_path_crop.txt'
 IMAGE_PREFIX = 'test_data/'
 UPLOAD_PREFIX = 'test_output/'
 TMP_PATH = '/tmp'
+LOCAL_IMAGE_LIST_PATH = 'test_data/test_example.txt'
 
 
 def _get_s3_image_list(s3_bucket, s3_path):
     s3_client = boto3.client('s3', region_name='us-west-2')
     f = BytesIO()
+    # logging.info("s3_bucket and  s3_path {}{}".format(s3_bucket, s3_path))
     s3_client.download_fileobj(s3_bucket, s3_path, f)
     lines = f.getvalue().decode('utf-8').split('\n')
     return [x.strip() for x in lines if x != '']
@@ -38,7 +40,8 @@ def _get_s3_image_list(s3_bucket, s3_path):
 
 def _download_s3_image(s3_bucket, s3_path, filename):
     s3_client = boto3.client('s3', region_name='us-west-2')
-    local_path = os.path.join(TMP_PATH, filename)
+    image_name = filename.split('/')[-1]
+    local_path = os.path.join(TMP_PATH, image_name)
     #download required image from s3 to local
     s3_client.download_file(s3_bucket, s3_path, local_path)
 
@@ -56,7 +59,7 @@ def _upload_output_to_s3(data, filename, s3_bucket, s3_prefix):
 
 
 def get_job_name():
-    return os.environ['DEEPERFORENSICS_EVAL_JOB_NAME']
+    return os.environ['CELEBASPOOF_EVAL_JOB_NAME']
 
 
 def upload_eval_output(output_probs, output_times, job_name):
@@ -117,7 +120,8 @@ def get_image():
         except:
             logging.info("Failed to download image: {}".format(os.path.join(IMAGE_PREFIX, image_id)))
             raise
-        image_local_path = os.path.join(TMP_PATH, image_id) # local path of the video named video_id
+        image_name = image_id.split('/')[-1]
+        image_local_path = os.path.join(TMP_PATH, image_name) # local path of the video named video_id
         image = read_image(image_local_path)
         elapsed = time.time() - st
         logging.info("image downloading & image reading time: {}".format(elapsed))
@@ -135,7 +139,7 @@ def get_local_image(max_number=None):
     
     return: tuple(video_id: str, image: numpy.array)
     """
-    image_list = [x.strip() for x in open(IMAGE_LIST_PATH)]
+    image_list = [x.strip() for x in open(LOCAL_IMAGE_LIST_PATH)]
     logging.info("got local image list, {} image".format(len(image_list)))
 
     for image_id in image_list:
@@ -158,7 +162,10 @@ def verify_local_output(output_probs, output_times):
     - num_frames (dict): dict of number of frames extracting from every video
     """
     # gts = json.load(open('test-data/local_test_groundtruth.json'), parse_int=float)
-    gts = json.load(open('test_data/test_example_label.json'))
+    gts = [ '574957.png', '578273.png','564943.png','606601.png']
+
+
+
 
     all_time = 0
     all_num_frames = 0
@@ -169,7 +176,7 @@ def verify_local_output(output_probs, output_times):
         all_time += output_times[k]
 
         logging.info("Image ID: {}, Runtime: {}".format(k, output_times[k]))
-        logging.info("\tgt: {}".format(gts[k]))
+        # logging.info("\tgt: {}".format(gts[k]))
         logging.info("\toutput probability: {}".format(output_probs[k]))
         logging.info("\toutput time: {}".format(output_times[k]))
 

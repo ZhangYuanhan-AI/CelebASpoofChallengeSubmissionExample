@@ -77,7 +77,7 @@ def run_local_test(detector_class, image_iter):
 
     logging.info("""
     ================================================================================
-    all images finished, showing verification info below:
+    All images finished, showing verification info below:
     ================================================================================
     """)
 
