@@ -65,14 +65,23 @@ def evaluate_runtime(detector_class, image_iter, job_name):
             # send errors to the eval frontend
             logging.error("Image id failed: {}".format(image_id))
             raise
+<<<<<<< HEAD
+=======
+        elapsed = time.time() - time_before
+        output_times[image_id] = elapsed
+        logging.info("Image {} run time: {}".format(image_id, elapsed))
+>>>>>>> b64322051cfef5a6bf5c7f20e988878723a13bf6
 
         eval_cnt += len(image)
 
         if eval_cnt % 5 == 0:
             logging.info("Finished {} images".format(eval_cnt))
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> b64322051cfef5a6bf5c7f20e988878723a13bf6
     logging.info("All images finished, uploading evaluation outputs for evaluation.")
     # send evaluation output to the server
     upload_eval_output(output_probs, job_name)

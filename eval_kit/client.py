@@ -22,6 +22,7 @@ from io import BytesIO
 # YOU CAN ONLY CHANGE LINE 95 - 116
 
 WORKSPACE_BUCKET = 'celeba-spoof-eval-workspace'
+<<<<<<< HEAD
 IMAGE_LIST_PATH = 'files/challenge_test_path_crop_10.txt'
 IMAGE_PREFIX = 'test_data/'
 UPLOAD_PREFIX = 'test_output/'
@@ -33,6 +34,13 @@ LOCAL_IMAGE_LIST_PATH = 'test_data/test_example.txt'
 LOCAL_LABEL_LIST_PATH = 'test_data/test_example_label.json'
 # LOCAL_ROOT =  '/mnt/lustre/yinzhenfei/antispoofing/general/image_data/CelebA_Spoof_finalize/Data/challenge_test_crop/'
 # LOCAL_IMAGE_LIST_PATH = '/mnt/lustre/yinzhenfei/antispoofing/general/image_data/CelebA_Spoof_finalize/challenge_test_path_crop_20796'
+=======
+IMAGE_LIST_PATH = 'files/challenge_test_path_crop.txt'
+IMAGE_PREFIX = 'test_data/'
+UPLOAD_PREFIX = 'test_output/'
+TMP_PATH = '/tmp'
+LOCAL_IMAGE_LIST_PATH = 'test_data/test_example.txt'
+>>>>>>> b64322051cfef5a6bf5c7f20e988878723a13bf6
 
 
 def _get_s3_image_list(s3_bucket, s3_path):
@@ -213,8 +221,12 @@ def verify_local_output(output_probs):
     - num_frames (dict): dict of number of frames extracting from every video
     """
     # gts = json.load(open('test-data/local_test_groundtruth.json'), parse_int=float)
+<<<<<<< HEAD
     with open (LOCAL_LABEL_LIST_PATH,'r') as f:
         gts = json.load(f)
+=======
+    gts = [ '574957.png', '578273.png','564943.png','606601.png']
+>>>>>>> b64322051cfef5a6bf5c7f20e988878723a13bf6
 
 
 
@@ -226,8 +238,13 @@ def verify_local_output(output_probs):
         assert k in output_probs, ValueError("The detector doesn't work on image {}".format(k))
 
 
+<<<<<<< HEAD
         logging.info("Image ID: {}".format(k))
         logging.info("\tgt: {}".format(gts[k]))
+=======
+        logging.info("Image ID: {}, Runtime: {}".format(k, output_times[k]))
+        # logging.info("\tgt: {}".format(gts[k]))
+>>>>>>> b64322051cfef5a6bf5c7f20e988878723a13bf6
         logging.info("\toutput probability: {}".format(output_probs[k]))
         # logging.info("\toutput time: {}".format(output_times[k]))
 

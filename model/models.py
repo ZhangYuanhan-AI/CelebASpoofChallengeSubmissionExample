@@ -190,6 +190,8 @@ class AENet(nn.Module):
         x_light = self.fc_light(x)
         x_live = self.fc_live(x)
 
+        print(x_live)
+
 
 
         return x_live
