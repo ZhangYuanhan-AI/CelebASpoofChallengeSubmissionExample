@@ -139,7 +139,7 @@ aws ecr get-login-password --region us-west-2 | docker login --username AWS --pa
 
 ```bash
 cd ../CelebASpoofChallengeSubmissionExample
-docker build -t celebA-spoof-challenge-<your_aws_id> .  # . means the current path. Please don't lose it.
+docker build -t celeba-spoof-challenge-<your_aws_id> .  # . means the current path. Please don't lose it.
 ```
 
 For example:
@@ -151,7 +151,7 @@ docker build -t celeba-spoof-challenge-123412341234 .
 3. After the build is completed, tag your image so you can push the image to the repository:
 
 ```bash
-docker tag CelebASpoof-challenge-<your_aws_id>:latest 692230297653.dkr.ecr.us-west-2.amazonaws.com/CelebASpoof-challenge-<your_aws_id>:latest
+docker tag celeba-spoof-challenge-<your_aws_id>:latest 692230297653.dkr.ecr.us-west-2.amazonaws.com/celeba-spoof-challenge-<your_aws_id>:latest
 ```
 
 4. Run the following command to push this image to your the AWS ECR repository:
