@@ -58,24 +58,24 @@ def evaluate_runtime(detector_class, image_iter, job_name):
         time_before = time.time()
         try:
             prob = detector.predict(image)
-            assert isinstance(prob, float)
-            output_probs[image_id] = prob
+            # assert isinstance(prob, float)
+            for idx,i in enumerate(image_id):
+                output_probs[i] = float(prob[idx][1])
         except:
             # send errors to the eval frontend
             logging.error("Image id failed: {}".format(image_id))
             raise
-        elapsed = time.time() - time_before
-        output_times[image_id] = elapsed
-        logging.info("Image {} run time: {}".format(image_id, elapsed))
 
-        eval_cnt += 1
+        eval_cnt += len(image)
 
-        if eval_cnt % 100 == 0:
-            logging.info("Finished {} image".format(eval_cnt))
+        if eval_cnt % 5 == 0:
+            logging.info("Finished {} images".format(eval_cnt))
+
+
 
     logging.info("All images finished, uploading evaluation outputs for evaluation.")
     # send evaluation output to the server
-    upload_eval_output(output_probs, output_times, job_name)
+    upload_eval_output(output_probs, job_name)
 
 
 if __name__ == '__main__':

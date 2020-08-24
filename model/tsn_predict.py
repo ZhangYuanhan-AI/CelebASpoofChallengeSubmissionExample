@@ -59,16 +59,19 @@ class TSNPredictor(CelebASpoofDetector):
         return processed_data
 
     def eval_image(self, image):
-        data = image.unsqueeze(0)
+        data = torch.stack(image,dim=0)
         channel = 3
         input_var = data.view(-1, channel, data.size(2), data.size(3)).cuda()
         with torch.no_grad():
             rst = self.net(input_var).detach()
-        return rst.reshape(1, self.num_class)
+        return rst.reshape(-1, self.num_class)
 
-    def predict(self, image):
-        data = self.preprocess_data(image)
-        rst = self.eval_image(data)
+    def predict(self, images):
+        real_data = []
+        for image in images:
+            data = self.preprocess_data(image)
+            real_data.append(data)
+        rst = self.eval_image(real_data)
         rst = torch.nn.functional.softmax(rst, dim=1).cpu().numpy().copy()
         probability = np.array(rst)
-        return float(probability[0][1])
+        return probability
