@@ -64,7 +64,6 @@ class TSNPredictor(CelebASpoofDetector):
         input_var = data.view(-1, channel, data.size(2), data.size(3)).cuda()
         with torch.no_grad():
             rst = self.net(input_var).detach()
-<<<<<<< HEAD
         return rst.reshape(-1, self.num_class)
 
     def predict(self, images):
@@ -73,13 +72,6 @@ class TSNPredictor(CelebASpoofDetector):
             data = self.preprocess_data(image)
             real_data.append(data)
         rst = self.eval_image(real_data)
-=======
-        return rst.reshape(1, self.num_class)
-
-    def predict(self, image):
-        data = self.preprocess_data(image)
-        rst = self.eval_image(data)
->>>>>>> b64322051cfef5a6bf5c7f20e988878723a13bf6
         rst = torch.nn.functional.softmax(rst, dim=1).cpu().numpy().copy()
         probability = np.array(rst)
         return probability
