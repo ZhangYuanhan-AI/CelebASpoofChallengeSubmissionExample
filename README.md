@@ -5,12 +5,20 @@ This repo provides an example Docker image for submission of CelebA-Spoof Challe
 
 ## Before you start: request resource provision
 
-First, create an account on the [challenge website](https://competitions.codalab.org/competitions/22955), as well as an [AWS account](https://aws.amazon.com/account/) (in any region except Beijing and Ningxia). Then, send your **AWS account id (12 digits)** and **an email address** to the orgnizers' email address: [sensetimeliveness@gmail.com](mailto:sensetimeliveness@gmail.com). We will allocate evaluation resources for you.
+1. Create an account on the [challenge website](https://competitions.codalab.org/competitions/22955), as well as an [AWS account](https://aws.amazon.com/account/) (in any region except Beijing and Ningxia). 
+2. Register CelebA-Spoof Challenge 2020 using the created CodaLab account.
+3. Then, send your **AWS account id (12 digits)** and **an email address** to the orgnizers' email address: [celebaspoof@gmail.com](mailto:celebaspoof@gmail.com). We will allocate evaluation resources for you.
+
 
 ## Install and configure AWS CLI
 Then you should install AWS CLI (we recommend version 2). Please refer to https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html.
 
-After installation, you should configure the settings that the AWS Command Line Interface (AWS CLI) uses to interact with AWS. Please refer to https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html.
+After installation, you should configure the settings that the AWS Command Line Interface (AWS CLI) uses to interact with AWS:
+
+1. Generate the AWS Access Key ID and AWS Secret Access Key in IAM： AWS Management Console -> Find Services -> Enter 'IAM' -> Choose IAM (Manage access to AWS resources) -> Delete your root access keys -> Manage security credentials -> Access keys (access key ID and secret access key) -> Create New Access Key.
+2. Run this command:
+   `aws configure`
+   Then it will require you to input AWS Access Key ID, AWS Secret Access Key, Default region name (please input us-west-2) and Default output format (left it empty). If you still have questions, please refer to https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html.
 
 ## Install Docker Engine
 In order to build your Docker image, you should install Docker Engine first. Please refer to [Install Docker Engine](https://docs.docker.com/engine/install/).
@@ -78,7 +86,7 @@ Before running, modify Line 32 in `local_test.py`.
 To verify your algorithm can be run properly, run the following command:
 
 ```bash
-docker run -it CelebASpoof-challenge-<your_aws_id> python3 local_test.py
+docker run -it celeba-spoof-challenge-<your_aws_id> python3 local_test.py
 ```
 
 **Please refer to step 2 and 3 in** [Submit the Docker image](#submit-the-docker-image) **to learn how to tag your Docker image.**
@@ -89,36 +97,27 @@ You can compare the output of your algorithm with the ground truth for the sampl
 The output will look like:
 
 ```
-INFO:root:image 494405.png run time: 3.766650676727295
-INFO:root:image 494406.png run time: 0.009404897689819336
-INFO:root:image 494407.png run time: 0.008934736251831055
-INFO:root:image 494408.png run time: 0.00885915756225586
-INFO:root:
     ================================================================================
-    all images finished, showing verification info below:
+    All images finished, showing verification info below:
     ================================================================================
 
-INFO:root:Image ID: 494405.png, Runtime: 3.766650676727295
+INFO:root:Image ID: 494405.png
 INFO:root:      gt: 1
-INFO:root:      output probability: -0.38473382592201233                                                                                                                                                    INFO:root:      output time: 3.766650676727295
+INFO:root:      output probability: 0.9999998807907104
 INFO:root:
-INFO:root:Image ID: 494406.png, Runtime: 0.009404897689819336
+INFO:root:Image ID: 494406.png
 INFO:root:      gt: 1
-INFO:root:      output probability: -0.38809671998023987
-INFO:root:      output time: 0.009404897689819336
+INFO:root:      output probability: 0.999998927116394
 INFO:root:
-INFO:root:Image ID: 494407.png, Runtime: 0.008934736251831055
-INFO:root:      gt: 1
-INFO:root:      output probability: -0.35367435216903687
-INFO:root:      output time: 0.008934736251831055
+INFO:root:Image ID: 494410.png
+INFO:root:      gt: 0
+INFO:root:      output probability: 6.803428732382599e-06
 INFO:root:
-INFO:root:Image ID: 494408.png, Runtime: 0.00885915756225586
-INFO:root:      gt: 1
-INFO:root:      output probability: -0.47143808007240295
-INFO:root:      output time: 0.00885915756225586
+INFO:root:Image ID: 494415.png
+INFO:root:      gt: 0
+INFO:root:      output probability: 3.3887470181070967e-06
 INFO:root:
 INFO:root:Done
-model step 27000 best prec@1: 96.66146441557561
 ```
 
 ## Submit the Docker image
@@ -133,32 +132,32 @@ Then, you can push your Docker image to the allocated ECR repo:
 Use the AWS CLI:
 
 ```bash
-aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 212923332099.dkr.ecr.us-west-2.amazonaws.com
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 692230297653.dkr.ecr.us-west-2.amazonaws.com
 ```
 
 2. Build your Docker image using the following command. For information on building a Docker file from scratch see the instructions here. You can skip this step if your image is already built:
 
 ```bash
 cd ../CelebASpoofChallengeSubmissionExample
-docker build -t CelebASpoof-challenge-<your_aws_id> .  # . means the current path. Please don't lose it.
+docker build -t celebA-spoof-challenge-<your_aws_id> .  # . means the current path. Please don't lose it.
 ```
 
 For example:
 
 ```bash
-docker build -t CelebASpoof-challenge-123412341234 . 
+docker build -t celeba-spoof-challenge-123412341234 . 
 ```
 
 3. After the build is completed, tag your image so you can push the image to the repository:
 
 ```bash
-docker tag CelebASpoof-challenge-<your_aws_id>:latest 212923332099.dkr.ecr.us-west-2.amazonaws.com/CelebASpoof-challenge-<your_aws_id>:latest
+docker tag CelebASpoof-challenge-<your_aws_id>:latest 692230297653.dkr.ecr.us-west-2.amazonaws.com/CelebASpoof-challenge-<your_aws_id>:latest
 ```
 
 4. Run the following command to push this image to your the AWS ECR repository:
 
 ```bash
-docker push 212923332099.dkr.ecr.us-west-2.amazonaws.com/CelebASpoof-challenge-<your_aws_id>:latest
+docker push692230297653.dkr.ecr.us-west-2.amazonaws.com/celeba-spoof-challenge-<your_aws_id>:latest
 ```
 
-After you pushed to the repo, the evaluation will automatically start. In **0.5 hours** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/22955).
+After you pushed to the repo, the evaluation will automatically start. In **45 minutes** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/22955).

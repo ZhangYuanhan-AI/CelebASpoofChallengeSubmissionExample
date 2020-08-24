@@ -14,7 +14,7 @@ Do not modify other part of the evaluation toolkit otherwise the evaluation will
 Author: Yuanjun Xiong, Zhengkui Guo, Yuanhan Zhang
 Contact: zhangyuanhan@sensetime.com
 
-DeeperForensics Challenge
+CelebA-Spoof Challenge
 """
 
 import time
@@ -28,14 +28,14 @@ logging.basicConfig(level=logging.INFO)
 
 sys.path.append('model')
 ########################################################################################################
-# please change these lines to include your own face detector extending the eval_kit.detector.DeeperForensicsDetector base class.
+# please change these lines to include your own face detector extending the eval_kit.detector.CelebASpoofDetector base class.
 from tsn_predict import TSNPredictor as CelebASpoofDetector
 ########################################################################################################
 
 
 def run_local_test(detector_class, image_iter):
     """
-    In this function we create the detector instance. And evaluate the wall time for performing DeeperForensicsDetector.
+    In this function we create the detector instance. And evaluate the wall time for performing CelebASpoofDetector.
     """
 
     # initialize the detector
@@ -50,7 +50,6 @@ def run_local_test(detector_class, image_iter):
 
     # run the images one-by-one and get runtime
     output_probs = {}
-    output_times = {}
     eval_cnt = 0
 
     logging.info("Starting runtime evaluation")
@@ -60,19 +59,18 @@ def run_local_test(detector_class, image_iter):
         #    import pdb;pdb.set_trace()
             prob = detector.predict(image)
             #import pdb;pdb.set_trace()
-            assert isinstance(prob, float)
-            output_probs[image_id] = prob
+            # assert isinstance(prob, float)
+            for idx,i in enumerate(image_id):
+                output_probs[i] = float(prob[idx][1])
         except:
             # send errors to the eval frontend
             logging.error("Image id failed: {}".format(image_id))
             raise
-        elapsed = time.time() - time_before
-        output_times[image_id] = elapsed
-        logging.info("image {} run time: {}".format(image_id, elapsed))
 
-        eval_cnt += 1
 
-        if eval_cnt % 100 == 0:
+        eval_cnt += len(image)
+
+        if eval_cnt % 10 == 0:
             logging.info("Finished {} images".format(eval_cnt))
 
     logging.info("""
@@ -82,7 +80,7 @@ def run_local_test(detector_class, image_iter):
     """)
 
     # verify the algorithm output
-    verify_local_output(output_probs, output_times)
+    verify_local_output(output_probs)
 
 
 if __name__ == '__main__':

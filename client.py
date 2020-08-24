@@ -27,7 +27,7 @@ IMAGE_PREFIX = 'test_data/'
 UPLOAD_PREFIX = 'test_output/'
 TMP_PATH = '/tmp'
 # 
-LOCAL_IMAGE_PREFIX = 'test_data/'
+LOCAL_IMAGE_PREFIX = '/'
 LOCAL_ROOT = '/'
 LOCAL_IMAGE_LIST_PATH = 'test_data/test_example.txt'
 LOCAL_LABEL_LIST_PATH = 'test_data/test_example_label.json'
@@ -175,7 +175,7 @@ def get_local_image(max_number=None):
     
     return: tuple(image_id: str, image: numpy.array)
     """
-    image_list = [x.strip() for x in open(LOCAL_IMAGE_LIST_PATH)]
+    image_list = [os.path.join(LOCAL_ROOT,x.strip()) for x in open(LOCAL_IMAGE_LIST_PATH)]
     logging.info("got local image list, {} image".format(len(image_list)))
     Batch_size = 1024
     logging.info("Batch_size=, {}".format(Batch_size))
@@ -213,7 +213,7 @@ def verify_local_output(output_probs):
     - num_frames (dict): dict of number of frames extracting from every video
     """
     # gts = json.load(open('test-data/local_test_groundtruth.json'), parse_int=float)
-    with open (LOCAL_LABEL_LIST_PATH,'r') as f:
+    with open (os.path.join(LOCAL_ROOT,LOCAL_LABEL_LIST_PATH),'r') as f:
         gts = json.load(f)
 
 
