@@ -5,9 +5,14 @@ This repo provides an example Docker image for submission of CelebA-Spoof Challe
 
 ## Before you start: request resource provision
 
-1. Create an account on the [challenge website](https://competitions.codalab.org/competitions/26210), as well as an [AWS account](https://aws.amazon.com/account/) (in any region except Beijing and Ningxia). 
-2. Register CelebA-Spoof Challenge 2020 using the created CodaLab account.
-3. Then, send your **AWS account id (12 digits)** and **an email address** to the orgnizers' email address: [celebaspoof@gmail.com](mailto:celebaspoof@gmail.com). We will allocate evaluation resources for you. (Very Important!)
+1. Create an account on the [challenge website (CodaLab)](https://competitions.codalab.org/competitions/26210), as well as an [AWS account](https://aws.amazon.com/account/) (in any region except Beijing and Ningxia). 
+2.  [Register](https://competitions.codalab.org/competitions/26210#participate) CelebA-Spoof Challenge 2020 using the created CodaLab account.
+3. Send yours following information to the orgnizers' email address: [celebaspoof@gmail.com](mailto:celebaspoof@gmail.com). We will check and allocate evaluation resources for you. (Very Important!)
+   - CodaLab user name (i.e. team name)
+   - The number of team members
+   - Affiliation
+   - CodaLab email address
+   - AWS account id (12 digits)
 
 
 ## Install and configure AWS CLI
@@ -128,36 +133,33 @@ After installing, set your AWS ID and credential. Please refer to [Configuration
 
 Then, you can push your Docker image to the allocated ECR repo:
 
-1. Retrieve the login command to use to authenticate your Docker client to your registry.
-Use the AWS CLI:
+**(692230297653 is organizers' AWS account, please don't change)**
+
+- **Step 1**. Retrieve the login command to use to authenticate your Docker client to your registry. Use the AWS CLI:
 
 ```bash
 aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 692230297653.dkr.ecr.us-west-2.amazonaws.com
 ```
 
-2. Build your Docker image using the following command. For information on building a Docker file from scratch see the instructions here. You can skip this step if your image is already built:
+- **Step 2**. Build your Docker image using the following command. For information on building a Docker file from scratch see the instructions here. You can skip this step if your image is already built:
 
 ```bash
 cd ../CelebASpoofChallengeSubmissionExample
 docker build -t celeba-spoof-challenge-<your_aws_id> .  # . means the current path. Please don't lose it.
+# Example
+# docker build -t celeba-spoof-challenge-123412341234 . 
 ```
 
-For example:
-
-```bash
-docker build -t celeba-spoof-challenge-123412341234 . 
-```
-
-3. After the build is completed, tag your image so you can push the image to the repository:
+- **Step 3**. After the build is completed, tag your image so you can push the image to the repository:
 
 ```bash
 docker tag celeba-spoof-challenge-<your_aws_id>:latest 692230297653.dkr.ecr.us-west-2.amazonaws.com/celeba-spoof-challenge-<your_aws_id>:latest
 ```
 
-4. Run the following command to push this image to your the AWS ECR repository:
+- **Step 4**. Run the following command to push this image to your the AWS ECR repository:
 
 ```bash
-docker push692230297653.dkr.ecr.us-west-2.amazonaws.com/celeba-spoof-challenge-<your_aws_id>:latest
+docker push 692230297653.dkr.ecr.us-west-2.amazonaws.com/celeba-spoof-challenge-<your_aws_id>:latest
 ```
 
 After you pushed to the repo, the evaluation will automatically start. In **45 minutes** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/26210).
