@@ -5,13 +5,13 @@ This repo provides an example Docker image for submission of CelebA-Spoof Challe
 
 ## Before you start: request resource provision
 
-1. Create an account on the [challenge website](https://competitions.codalab.org/competitions/22955), as well as an [AWS account](https://aws.amazon.com/account/) (in any region except Beijing and Ningxia). 
+1. Create an account on the [challenge website](https://competitions.codalab.org/competitions/26210), as well as an [AWS account](https://aws.amazon.com/account/) (in any region except Beijing and Ningxia). 
 2. Register CelebA-Spoof Challenge 2020 using the created CodaLab account.
-3. Then, send your **AWS account id (12 digits)** and **an email address** to the orgnizers' email address: [celebaspoof@gmail.com](mailto:celebaspoof@gmail.com). We will allocate evaluation resources for you.
+3. Then, send your **AWS account id (12 digits)** and **an email address** to the orgnizers' email address: [celebaspoof@gmail.com](mailto:celebaspoof@gmail.com). We will allocate evaluation resources for you. (Very Important!)
 
 
 ## Install and configure AWS CLI
-Then you should install AWS CLI (we recommend version 2). Please refer to https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html.
+AWS CLI (we recommend version 2) is required. Please refer to https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html.
 
 After installation, you should configure the settings that the AWS Command Line Interface (AWS CLI) uses to interact with AWS:
 
@@ -57,7 +57,7 @@ You need to implement the abstract function `predict(self, image)` in your detec
         params:
             - image (np.array): numpy array of required image
         return:
-            - probablity (float)
+            - probablity
         """
         pass
 
@@ -160,4 +160,4 @@ docker tag celeba-spoof-challenge-<your_aws_id>:latest 692230297653.dkr.ecr.us-w
 docker push692230297653.dkr.ecr.us-west-2.amazonaws.com/celeba-spoof-challenge-<your_aws_id>:latest
 ```
 
-After you pushed to the repo, the evaluation will automatically start. In **45 minutes** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/22955).
+After you pushed to the repo, the evaluation will automatically start. In **45 minutes** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/26210).
