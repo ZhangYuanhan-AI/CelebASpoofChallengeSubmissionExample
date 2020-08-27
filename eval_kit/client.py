@@ -217,9 +217,6 @@ def verify_local_output(output_probs):
 
 
 
-
-    all_time = 0
-    all_num_frames = 0
     for k in gts:
         #import pdb;pdb.set_trace()
         assert k in output_probs, ValueError("The detector doesn't work on image {}".format(k))
