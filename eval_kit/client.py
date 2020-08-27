@@ -31,8 +31,7 @@ LOCAL_IMAGE_PREFIX = 'test_data/'
 LOCAL_ROOT = '/'
 LOCAL_IMAGE_LIST_PATH = 'test_data/test_example.txt'
 LOCAL_LABEL_LIST_PATH = 'test_data/test_example_label.json'
-# LOCAL_ROOT =  '/mnt/lustre/yinzhenfei/antispoofing/general/image_data/CelebA_Spoof_finalize/Data/challenge_test_crop/'
-# LOCAL_IMAGE_LIST_PATH = '/mnt/lustre/yinzhenfei/antispoofing/general/image_data/CelebA_Spoof_finalize/challenge_test_path_crop_20796'
+
 
 
 def _get_s3_image_list(s3_bucket, s3_path):

@@ -3,7 +3,6 @@ import sys
 import numpy as np
 import torchvision
 import torch
-#from sklearn.metrics import confusion_matrix
 
 from models import AENet
 from ops import ConsensusModule
@@ -13,8 +12,7 @@ from eval_kit.detector import CelebASpoofDetector
 
 def pretrain(model, state_dict):
     own_state = model.state_dict()
-    # print('own_state',own_state.keys())
-    # print('state_dict',state_dict.keys())
+
     for name, param in state_dict.items():
         realname = name.replace('module.','')
         if realname in own_state:
@@ -36,10 +34,9 @@ class TSNPredictor(CelebASpoofDetector):
         self.num_class = 2
         self.net = AENet(num_classes = self.num_class)
         checkpoint = torch.load('./model/ckpt_iter_27000.pth.tar')
-        # print("model step {} best prec@1: {}".format(checkpoint['step'], checkpoint['best_prec1']))
+
         pretrain(self.net,checkpoint['state_dict'])
-        # base_dict = {'.'.join(k.split('.')[1:]): v for k, v in list(checkpoint['state_dict'].items())}
-        # self.net.load_state_dict(base_dict)
+
         self.new_width = self.new_height = 224
 
         self.transform = torchvision.transforms.Compose([

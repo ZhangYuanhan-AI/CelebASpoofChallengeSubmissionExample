@@ -14,10 +14,6 @@ BN = nn.BatchNorm2d
 
 
 
-def where(cond, x_1, x_2):
-    cond = cond.type(torch.cuda.FloatTensor)
-    return (cond * x_1) + ((1-cond) * x_2)
-
 def conv3x3(in_planes, out_planes, stride=1):
     "3x3 convolution with padding"
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
@@ -97,10 +93,10 @@ class Bottleneck(nn.Module):
 
 
 
-
+# AENet is based on ResNet-18
 class AENet(nn.Module):
 
-    def __init__(self, block=BasicBlock, layers=[2, 2, 2, 2], num_classes=1000, group_size=1, group=None, sync_stats=False):
+    def __init__(self, block=BasicBlock, layers=[2, 2, 2, 2], num_classes=1000, sync_stats=False):
         
         global BN
 
@@ -118,16 +114,19 @@ class AENet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
         self.avgpool = nn.AvgPool2d(7, stride=1)
 
+        # Three classifiers of semantic informantion
         self.fc_live_attribute = nn.Linear(512 * block.expansion, 40)
         self.fc_attack = nn.Linear(512 * block.expansion, 11)
         self.fc_light = nn.Linear(512 * block.expansion, 5)
+        # One classifier of Live/Spoof information
         self.fc_live = nn.Linear(512 * block.expansion, 2)
 
     
-        
+        # Two embedding modules of geometric information
         self.upsample14 = nn.Upsample((14, 14), mode='bilinear')
         self.depth_final = nn.Conv2d(512, 1, kernel_size=3, stride=1, padding=1,bias=False)
         self.reflect_final = nn.Conv2d(512, 3, kernel_size=3, stride=1, padding=1,bias=False)
+        # The ground truth of depth map and reflection map has been normalized[torchvision.transforms.ToTensor()]
         self.sigmoid = nn.Sigmoid()
 
 
@@ -201,5 +200,6 @@ class AENet(nn.Module):
 if __name__=="__main__":
     model = AENet()
     model.eval()
+    print('wewew')
 
 

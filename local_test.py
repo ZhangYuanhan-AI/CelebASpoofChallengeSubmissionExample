@@ -12,7 +12,7 @@ The participants are expected to implement a face forgery detector class. The sa
 Do not modify other part of the evaluation toolkit otherwise the evaluation will fail.
 
 Author: Yuanjun Xiong, Zhengkui Guo, Yuanhan Zhang
-Contact: zhangyuanhan@sensetime.com
+Contact: celebaspoof@gmail.com
 
 CelebA-Spoof Challenge
 """
@@ -56,10 +56,8 @@ def run_local_test(detector_class, image_iter):
     for image_id, image in image_iter:
         time_before = time.time()
         try:
-        #    import pdb;pdb.set_trace()
             prob = detector.predict(image)
-            #import pdb;pdb.set_trace()
-            # assert isinstance(prob, float)
+
             for idx,i in enumerate(image_id):
                 output_probs[i] = float(prob[idx][1])
         except:
