@@ -28,6 +28,9 @@ After installation, you should configure the settings that the AWS Command Line 
 ## Install Docker Engine
 In order to build your Docker image, you should install Docker Engine first. Please refer to [Install Docker Engine](https://docs.docker.com/engine/install/).
 
+## Install nvidia-docker
+Because GPU is necessary for both the local test and online evaluation, we also need to install nvidia-docker. Please refer to https://github.com/NVIDIA/nvidia-docker.
+
 ## Obtain this example
 
 Run the following command to clone this submission example repo:
