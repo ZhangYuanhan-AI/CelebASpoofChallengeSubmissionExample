@@ -23,6 +23,7 @@ After installation, you should configure the settings that the AWS Command Line 
 1. Generate the AWS Access Key ID and AWS Secret Access Key in IAM: AWS Management Console -> Find Services -> Enter 'IAM' -> Choose IAM (Manage access to AWS resources) -> Delete your root access keys -> Manage security credentials -> Access keys (access key ID and secret access key) -> Create New Access Key.
 2. Run this command:
    `aws configure`
+   
    Then it will require you to input AWS Access Key ID, AWS Secret Access Key, Default region name (please input us-west-2) and Default output format (left it empty). If you still have questions, please refer to [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html).
 
 ## Install Docker Engine
@@ -129,11 +130,7 @@ INFO:root:Done
 
 ## Submit the Docker image
 
-First, you should install AWS CLI version 2. Please refer to [Installing the AWS CLI version 2 on Linux](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html).
-
-After installing, set your AWS ID and credential. Please refer to [Configuration and credential file settings](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html). **Note: Please use your root access keys.** (refer to [Creating Access Keys for the Root User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html#id_root-user_manage_add-key)) Or your submission may fail.
-
-Then, you can push your Docker image to the allocated ECR repo:
+You can push your Docker image to the allocated ECR repo as following steps:
 
 **(692230297653 is organizers' AWS account, please don't change)**
 
