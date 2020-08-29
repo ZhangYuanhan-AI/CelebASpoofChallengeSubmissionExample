@@ -8,8 +8,7 @@ Then the runtime output will be reported to the evaluation system.
 The participants are expected to implement a  detector class. The sample detector illustrates the interface.
 Do not modify other part of the evaluation toolkit otherwise the evaluation will fail.
 
-Author: Yuanjun Xiong, Zhengkui Guo, Yuanhan Zhang
-Contact: zhangyuanhan@sensetime.com
+Contact: celebaspoof@gmail.com
 
 CelebA-Spoof Challenge
 """
@@ -26,7 +25,7 @@ logging.basicConfig(level=logging.INFO)
 sys.path.append('model')
 ########################################################################################################
 # Please change this line to include your own detector extending the eval_kit.detector.CelebASpoofDetector base class.
-from tsn_predict import AENetPredictor as CelebASpoofDetector
+from predictor import AENetPredictor as CelebASpoofDetector
 ########################################################################################################
 
 
