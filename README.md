@@ -49,7 +49,7 @@ git clone https://github.com/Davidzhangyuanhan/CelebASpoofChallengeSubmissionExa
 sys.path.append('..')
 from eval_kit.detector import CelebASpoofDetector
 
-class TSNPredictor(CelebASpoofDetector): # You can give your detector any name.
+class AENetPredictor(CelebASpoofDetector): # You can give your detector any name.
     ...
 ```
 You need to implement the abstract function `predict(self, image)` in your detector class:
