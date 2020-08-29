@@ -77,7 +77,7 @@ You need to implement the abstract function `predict(self, image)` in your detec
 ```python
 ########################################################################################################
 # please change this line to include your own detector extending the eval_kit.detector.CelebASpoofDetector base class.
-from tsn_predict import AENetPredictor as CelebASpoofDetector
+from predictor import AENetPredictor as CelebASpoofDetector
 ########################################################################################################
 ```
 
