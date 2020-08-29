@@ -29,7 +29,7 @@ logging.basicConfig(level=logging.INFO)
 sys.path.append('model')
 ########################################################################################################
 # please change these lines to include your own face detector extending the eval_kit.detector.CelebASpoofDetector base class.
-from tsn_predict import TSNPredictor as CelebASpoofDetector
+from tsn_predict import AENetPredictor as CelebASpoofDetector
 ########################################################################################################
 
 

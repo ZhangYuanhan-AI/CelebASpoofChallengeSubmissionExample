@@ -28,7 +28,7 @@ def pretrain(model, state_dict):
                       .format(realname, own_state[name].size(), param.size()))
                 print("But don't worry about it. Continue pretraining.")
 
-class TSNPredictor(CelebASpoofDetector):
+class AENetPredictor(CelebASpoofDetector):
 
     def __init__(self):
         self.num_class = 2

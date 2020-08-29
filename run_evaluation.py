@@ -26,7 +26,7 @@ logging.basicConfig(level=logging.INFO)
 sys.path.append('model')
 ########################################################################################################
 # Please change this line to include your own detector extending the eval_kit.detector.CelebASpoofDetector base class.
-from tsn_predict import TSNPredictor as CelebASpoofDetector
+from tsn_predict import AENetPredictor as CelebASpoofDetector
 ########################################################################################################
 
 
