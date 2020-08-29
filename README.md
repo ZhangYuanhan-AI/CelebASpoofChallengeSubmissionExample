@@ -16,20 +16,20 @@ This repo provides an example Docker image for submission of CelebA-Spoof Challe
 
 
 ## Install and configure AWS CLI
-AWS CLI (we recommend version 2) is required. Please refer to https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html.
+AWS CLI is required. ([version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) is recommended)
 
 After installation, you should configure the settings that the AWS Command Line Interface (AWS CLI) uses to interact with AWS:
 
-1. Generate the AWS Access Key ID and AWS Secret Access Key in IAM： AWS Management Console -> Find Services -> Enter 'IAM' -> Choose IAM (Manage access to AWS resources) -> Delete your root access keys -> Manage security credentials -> Access keys (access key ID and secret access key) -> Create New Access Key.
+1. Generate the AWS Access Key ID and AWS Secret Access Key in IAM: AWS Management Console -> Find Services -> Enter 'IAM' -> Choose IAM (Manage access to AWS resources) -> Delete your root access keys -> Manage security credentials -> Access keys (access key ID and secret access key) -> Create New Access Key.
 2. Run this command:
    `aws configure`
-   Then it will require you to input AWS Access Key ID, AWS Secret Access Key, Default region name (please input us-west-2) and Default output format (left it empty). If you still have questions, please refer to https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html.
+   Then it will require you to input AWS Access Key ID, AWS Secret Access Key, Default region name (please input us-west-2) and Default output format (left it empty). If you still have questions, please refer to [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html).
 
 ## Install Docker Engine
 In order to build your Docker image, you should install Docker Engine first. Please refer to [Install Docker Engine](https://docs.docker.com/engine/install/).
 
 ## Install nvidia-docker
-Because GPU is necessary for both the local test and online evaluation, we also need to install nvidia-docker. Please refer to https://github.com/NVIDIA/nvidia-docker.
+Because GPU is necessary for both the local test and online evaluation, we also need to install nvidia-docker. Please refer to [nvidia-docker](https://github.com/NVIDIA/nvidia-docker).
 
 ## Obtain this example
 
@@ -100,7 +100,6 @@ docker run -it celeba-spoof-challenge-<your_aws_id> python3 local_test.py
 **Please refer to step 2 and 3 in** [Submit the Docker image](#submit-the-docker-image) **to learn how to tag your Docker image.**
 
 It will run the algorithms in the evaluation workflow on some sample images and print out the results.
-You can compare the output of your algorithm with the ground truth for the sample images. 
 
 The output will look like:
 
@@ -144,7 +143,7 @@ Then, you can push your Docker image to the allocated ECR repo:
 aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 692230297653.dkr.ecr.us-west-2.amazonaws.com
 ```
 
-- **Step 2**. Build your Docker image using the following command. For information on building a Docker file from scratch see the instructions here. You can skip this step if your image is already built:
+- **Step 2**. Build your Docker image using the following command. For information on building a Docker file from scratch see the instructions here. You can skip this step if your image has already been built:
 
 ```bash
 cd ../CelebASpoofChallengeSubmissionExample
@@ -159,10 +158,10 @@ docker build -t celeba-spoof-challenge-<your_aws_id> .  # . means the current pa
 docker tag celeba-spoof-challenge-<your_aws_id>:latest 692230297653.dkr.ecr.us-west-2.amazonaws.com/celeba-spoof-challenge-<your_aws_id>:latest
 ```
 
-- **Step 4**. Run the following command to push this image to your the AWS ECR repository:
+- **Step 4**. Run the following command to push this image to your AWS ECR repository:
 
 ```bash
 docker push 692230297653.dkr.ecr.us-west-2.amazonaws.com/celeba-spoof-challenge-<your_aws_id>:latest
 ```
 
-After you pushed to the repo, the evaluation will automatically start. In **45 minutes** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/26210).
+After you push to the repo, the evaluation will automatically start. In **45 minutes** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/26210).
