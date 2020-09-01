@@ -165,4 +165,4 @@ After you push to the repo, the evaluation will automatically start. In **45 min
 
 ## Acknowledgments
 
-We sincerely thank the codebase from [DeeperForensics Challenge](https://github.com/Drdestiny/DeeperForensicsChallengeSubmissionExample). Especially for the instruction from [Zhengkui Guo](https://drdestiny.github.io/) and [Liming Jiang](https://liming-jiang.com/).
+We sincerely thank the codebase from [DeeperForensics Challenge](https://github.com/Drdestiny/DeeperForensicsChallengeSubmissionExample), especially for the instruction from [Zhengkui Guo](https://drdestiny.github.io/) and [Liming Jiang](https://liming-jiang.com/).
