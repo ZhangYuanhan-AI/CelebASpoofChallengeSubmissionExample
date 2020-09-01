@@ -162,3 +162,7 @@ docker push 692230297653.dkr.ecr.us-west-2.amazonaws.com/celeba-spoof-challenge-
 ```
 
 After you push to the repo, the evaluation will automatically start. In **45 minutes** you should receive a email with the evaluation result if the evaluation is successful. Finally, you can submit the evaluation result to the [challenge website](https://competitions.codalab.org/competitions/26210).
+
+## Acknowledgments
+
+We sincerely thank the codebase from [DeeperForensics Challenge](https://github.com/Drdestiny/DeeperForensicsChallengeSubmissionExample). Especially for the instruction from [Zhengkui Guo](https://drdestiny.github.io/) and [Liming Jiang](https://liming-jiang.com/).
