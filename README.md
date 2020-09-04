@@ -12,6 +12,7 @@ This repo provides an example Docker image for submission of CelebA-Spoof Challe
    - The number of team members
    - Affiliation
    - CodaLab email address
+   - Emails of all team members
    - AWS account id (12 digits)
 
 
