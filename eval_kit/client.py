@@ -19,7 +19,12 @@ from io import BytesIO
 
 
 # EVALUATION SYSTEM SETTINGS
-# YOU CAN ONLY CHANGE LINE 95 - 116
+# YOU CAN ONLY CHANGE LINE 23-16 and 95 - 116
+
+########################################################################################################
+BATCH_SIZE = 1024
+# Your change ends here.
+########################################################################################################
 
 WORKSPACE_BUCKET = 'celeba-spoof-eval-workspace'
 IMAGE_LIST_PATH = 'files/challenge_test_path_crop_20796.txt'
@@ -115,8 +120,7 @@ def get_image():
     """
     image_list = _get_s3_image_list(WORKSPACE_BUCKET, IMAGE_LIST_PATH)
     logging.info("got image list, {} image".format(len(image_list)))
-    Batch_size = 2048
-    logging.info("Batch_size=, {}".format(Batch_size))
+    logging.info("Batch_size=, {}".format(BATCH_SIZE))
     n = 0
     final_image = []
     final_image_buff = []
@@ -147,7 +151,7 @@ def get_image():
         elapsed = time.time() - st
         logging.info("image downloading & image reading time: {}".format(elapsed))
 
-        if n == Batch_size or idx == len(image_list) - 1:
+        if n == BATCH_SIZE or idx == len(image_list) - 1:
             final_image.extend(final_image_buff)
             final_image_id.extend(final_image_id_buff)
             np_final_image_id = np.array(final_image_id)
@@ -176,8 +180,7 @@ def get_local_image(max_number=None):
     """
     image_list = [x.strip() for x in open(LOCAL_IMAGE_LIST_PATH)]
     logging.info("got local image list, {} image".format(len(image_list)))
-    Batch_size = 1024
-    logging.info("Batch_size=, {}".format(Batch_size))
+    logging.info("Batch_size=, {}".format(BATCH_SIZE))
     n = 0
     final_image = []
     final_image_id = []
@@ -192,7 +195,7 @@ def get_local_image(max_number=None):
             logging.info("Failed to read image: {}".format(os.path.join(LOCAL_IMAGE_PREFIX, image_id)))
             raise
 
-        if n == Batch_size or idx == len(image_list) - 1:
+        if n == BATCH_SIZE or idx == len(image_list) - 1:
             np_final_image_id = np.array(final_image_id)
             np_final_image = np.array(final_image)
             n = 0
